@@ -53,6 +53,7 @@ def get_all_students():
 def get_particular_student():
     username = request.args.get('username')
     roll = request.args.get('roll')
+    usernamef,usernamem,usernamel=username.split()
     if((username is None or username is '') and (roll is None or roll is '')):
         abort(400)
     db = get_db()
@@ -60,6 +61,11 @@ def get_particular_student():
     if username:
         print(username)
         c.execute("SELECT * FROM students WHERE username IS ?", (username, ))
+        c.execute("SELECT * FROM students WHERE username LIKE %?%", (usernamef+" "+usernamel, ))
+        c.execute("SELECT * FROM students WHERE username LIKE %?%", (usernamem+" "+usernamef, ))
+        c.execute("SELECT * FROM students WHERE username LIKE %?%", (usernamem+" "+usernamel, ))
+        c.execute("SELECT * FROM students WHERE username LIKE %?%", (usernamel+" "+usernamef, ))
+        c.execute("SELECT * FROM students WHERE username LIKE %?%", (usernamel+" "+usernamem, ))
     else:
         print(roll)
         c.execute("SELECT * FROM students WHERE roll IS ?", (roll, ))
